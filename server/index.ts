@@ -48,9 +48,15 @@ const server = HTTP.createServer((request, response) => {
     response.write(`data: ${event.data}\n\n`);
   }, 1500);
 
-  request.on("close", () => clearInterval(handle));
-  request.on("error", () => clearInterval(handle));
-  request.on("end", () => clearInterval(handle));
+  request.on("close", () => {
+    clearInterval(handle);
+    response.end();
+  });
+
+  request.on("error", () => {
+    clearInterval(handle);
+    response.end();
+  });
 });
 
 server
