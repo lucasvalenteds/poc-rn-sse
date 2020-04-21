@@ -1,36 +1,31 @@
-import React, { useEffect } from 'react';
-import { SafeAreaView, ScrollView, StatusBar } from 'react-native';
-import RNEventSource from 'react-native-event-source';
-
-interface Message {
-  id: string;
-  title: string;
-  content: string;
-  timestamp: string;
-}
-
-type Events = 'new-message';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StatusBar, FlatList, View } from 'react-native';
+import { MessageService, Message, MessageComponent } from './Message';
 
 const App: React.FC = (): React.ReactElement => {
+  const [messages, setMessages] = useState<Message[]>([]);
+
   useEffect(() => {
-    const sse = new RNEventSource('http://localhost:8080');
+    const service = new MessageService();
 
-    sse.addEventListener<Events>('new-message', (event) => {
-      const message: Message = JSON.parse(event.data);
-
-      console.debug(message.content);
+    service.listen<Message>('new-message', (message) => {
+      setMessages((previous: Message[]) => [message, ...previous]);
     });
 
-    return (): void => {
-      sse.removeAllListeners();
-      sse.close();
-    };
+    return () => service.disconnect();
   }, []);
   return (
     <>
       <StatusBar />
       <SafeAreaView>
-        <ScrollView></ScrollView>
+        <FlatList
+          data={messages}
+          keyExtractor={(prop) => prop.id}
+          renderItem={(prop) => MessageComponent(prop.item)}
+          ItemSeparatorComponent={() => (
+            <View style={{ height: 1, backgroundColor: '#22222222' }} />
+          )}
+        />
       </SafeAreaView>
     </>
   );

@@ -1,8 +1,8 @@
 declare module 'react-native-event-source' {
   export interface SseEvent {
-    id: string;
-    event: string;
-    data: string;
+    data?: string;
+    lastEventId?: string;
+    [key: string]: any;
   }
 
   export interface EventSourceOptions {
