@@ -8,8 +8,10 @@
     "build": "tsc"
   },
   "devDependencies": {
+    "@types/faker": "4.1.11",
     "@types/jest": "25.1.4",
     "@types/node": "13.9.1",
+    "@types/uuid": "7.0.2",
     "@typescript-eslint/eslint-plugin": "2.23.0",
     "@typescript-eslint/parser": "2.23.0",
     "eslint": "6.8.0",
@@ -82,5 +84,9 @@
       "eslint --fix",
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "faker": "4.1.0",
+    "uuid": "7.0.3"
   }
 }
