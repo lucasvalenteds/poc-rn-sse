@@ -52,11 +52,6 @@ const server = HTTP.createServer((request, response) => {
     clearInterval(handle);
     response.end();
   });
-
-  request.on("error", () => {
-    clearInterval(handle);
-    response.end();
-  });
 });
 
 server
